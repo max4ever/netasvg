@@ -15,24 +15,9 @@ class ApiController
      */
     public function indexAction(Request $request)
     {
-        $aParameters = [];
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
+        $aShapes = $request->get('shapes');
 
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                return new JsonResponse(
-                    [
-                        'status' => 'error',
-                        'error_message' => 'Unable to parse response body into JSON: ' . json_last_error()
-                    ],
-                    JsonResponse::HTTP_BAD_REQUEST
-                );
-
-                throw new \RuntimeException('Unable to parse response body into JSON: ' . json_last_error());
-            }
-        }
-
-        dump($parametersAsArray);
+        dump($aShapes);
         return new Response('Test');
     }
 }

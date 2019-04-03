@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Exception\InvalidCircleJsonException;
+use App\Exception\UnsupportedShapeTypeException;
+use App\Shape\Factory\ShapesFactory;
+use App\Svg\SvgResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +15,43 @@ class ApiController
 
     /**
      * @Route("/api/draw-me-like-one-of-your-french-girls/", methods={"POST"}, name="generate_svg")
+     *
+     * @param Request $request
+     * @param ShapesFactory $oShapeFactory
+     * @param SvgResponse $oSvgResponse
+     * @return SvgResponse|Response
      */
-    public function indexAction(Request $request)
+    public function mainAction(Request $request, ShapesFactory $oShapeFactory, SvgResponse $oSvgResponse)
     {
         $aShapes = $request->get('shapes');
 
-        dump($aShapes);
-        return new Response('Test');
+        $sHTML = '';
+        if (is_countable($aShapes)){
+            foreach($aShapes as $aShape){
+
+                if (!isset($aShape['type'])){
+                    return Response::create('Invalid json, missing type of shape.', Response::HTTP_BAD_REQUEST);
+                }
+
+                try{
+                    $oShape = $oShapeFactory->getShape($aShape['type'], $aShape);
+                }
+                catch(InvalidCircleJsonException $e){
+                    return Response::create('Invalid json data structure for circle shape', Response::HTTP_BAD_REQUEST);
+                }
+                catch(UnsupportedShapeTypeException $e){
+                    return Response::create('Unsported shape "' . $aShape['type'] .'" ', Response::HTTP_BAD_REQUEST);
+                }
+
+                if (!empty($oShape)){
+                    $sHTML .= $oShape->getSvgCode();
+                }
+
+            }
+        }
+
+        $oSvgResponse->setContent($sHTML);
+
+        return $oSvgResponse;
     }
 }

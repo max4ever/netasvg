@@ -30,10 +30,11 @@ class CircleBuilder extends AbstractShapesBuilder
 
     /**
      * CircleBuilder constructor.
+     * @param CircleShape $oCircle
      */
-    public function __construct()
+    public function __construct(CircleShape $oCircle)
     {
-        $this->oCircle = new CircleShape();
+        $this->oCircle = $oCircle;
     }
 
     /**

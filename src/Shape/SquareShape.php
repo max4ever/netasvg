@@ -2,15 +2,14 @@
 
 namespace App\Shape;
 
-class CircleShape implements ShapeInterface
-{
+class SquareShape implements ShapeInterface{
+
     use ShapeTrait;
 
-    /*<circle cx="%s" cy="%s" r="%s" stroke="%s" stroke-width="%s" fill="%s" />*/
+    /*<rect x="10" y="10" width="30" height="30"/>*/
 
-    private const DEFAULT_CIRCLE_X_CENTER = 100;
-    private const DEFAULT_CIRCLE_Y_CENTER = 100;
-    private const DEFAULT_FILL = 'transparent';
+    private const DEFAULT_X_CENTER = 50;
+    private const DEFAULT_Y_CENTER = 50;
     /**
      * @var \DOMElement
      */
@@ -19,18 +18,25 @@ class CircleShape implements ShapeInterface
     public function __construct()
     {
         $domDocument = new \DOMDocument('1.0', "UTF-8");
-        $this->oDomElement = $domDocument->createElement('circle');
-        $this->oDomElement->setAttribute('cx', self::DEFAULT_CIRCLE_X_CENTER);
-        $this->oDomElement->setAttribute('cy', self::DEFAULT_CIRCLE_Y_CENTER);
-        $this->oDomElement->setAttribute('fill', self::DEFAULT_FILL);
+        $this->oDomElement = $domDocument->createElement('rect');
+        $this->oDomElement->setAttribute('x', self::DEFAULT_X_CENTER);
+        $this->oDomElement->setAttribute('y', self::DEFAULT_Y_CENTER);
     }
 
     /**
-     * @param string $sRadius
+     * @param int $iWidth
      */
-    public function setRadius(string $sRadius) : void
+    public function setWidth(int $iWidth) : void
     {
-        $this->oDomElement->setAttribute('r', $sRadius);
+        $this->oDomElement->setAttribute('width', $iWidth);
+    }
+
+    /**
+     * @param int $iHeight
+     */
+    public function setHeight(int $iHeight) : void
+    {
+        $this->oDomElement->setAttribute('height', $iHeight);
     }
 
     /**

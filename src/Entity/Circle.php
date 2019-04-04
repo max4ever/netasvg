@@ -5,7 +5,8 @@ namespace App\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class Circle{
+class Circle
+{
 
     /**
      * @Assert\NotBlank()
@@ -27,4 +28,11 @@ class Circle{
      */
     private $border;
 
+
+    public function __construct(array $properties = [])
+    {
+        foreach ($properties as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
 }

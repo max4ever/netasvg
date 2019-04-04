@@ -35,18 +35,16 @@ class ApiController
 
                 try{
                     $oShape = $oShapeFactory->getShape($aShape['type'], $aShape);
+                    if (!empty($oShape)){
+                        $sHTML .= $oShape->getSvgCode();
+                    }
                 }
                 catch(InvalidCircleJsonException $e){
-                    return Response::create('Invalid json data structure for circle shape', Response::HTTP_BAD_REQUEST);
+                    return Response::create('Invalid json data structure for circle shape: ' . $e->getMessage(), Response::HTTP_BAD_REQUEST);
                 }
                 catch(UnsupportedShapeTypeException $e){
                     return Response::create('Unsported shape "' . $aShape['type'] .'" ', Response::HTTP_BAD_REQUEST);
                 }
-
-                if (!empty($oShape)){
-                    $sHTML .= $oShape->getSvgCode();
-                }
-
             }
         }
 

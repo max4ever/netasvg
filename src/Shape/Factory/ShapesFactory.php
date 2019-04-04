@@ -8,6 +8,7 @@ use App\Exception\UnsupportedShapeTypeException;
 use App\Shape\Builder\CircleBuilder;
 use App\Shape\RectangleShape;
 use App\Shape\ShapeInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ShapesFactory
@@ -53,12 +54,7 @@ class ShapesFactory
         switch ($sType) {
 
             case self::CIRCLE:
-
-                if (!$this->validateCircleProperties($aProperties)) {
-                    throw new InvalidCircleJsonException('array structure is not matching circle requirements');
-                }
                 $oShape = $this->getCircleShape($aProperties);
-
                 break;
 
             case self::SQUARE:
@@ -73,43 +69,44 @@ class ShapesFactory
     }
 
     /**
-     * Get the Circle shape based on the properties array
      * @param array $aProperties
      * @return ShapeInterface
+     * @throws InvalidCircleJsonException
      */
     private function getCircleShape(array $aProperties)
     {
-        $this->validateCircleProperties($aProperties);
-
-        return $this->oCircleBuilder
-            ->setBorderColor($aProperties['border']['color'])
-            ->setBorderWidth($aProperties['border']['width'])
-            ->setPerimeter($aProperties['perimeter'])
-            ->getShape();
+        if ($this->validateCircleProperties($aProperties) === true) {
+            return $this->oCircleBuilder
+                ->setBorderColor($aProperties['border']['color'])
+                ->setBorderWidth($aProperties['border']['width'])
+                ->setPerimeter($aProperties['perimeter'])
+                ->getShape();
+        } else {
+            return null;
+        }
     }
 
     /**
-     * Check if the circle array has the correct structure and values
      * @param array $aProperties
      * @return bool
+     * @throws InvalidCircleJsonException
      */
     private function validateCircleProperties(array $aProperties): bool
     {
-        $metadata = $this->oValidator->getMetadataFor(Circle::class);
-        $constrainedProperties = $metadata->getConstrainedProperties();
-        foreach ($constrainedProperties as $constrainedProperty) {
-            if (!isset($aProperties[$constrainedProperty])){
-                return false;
+        $oCircle = new Circle($aProperties);
+        $oFailedConstraints = $this->oValidator->validate($oCircle);
+
+
+        if (count($oFailedConstraints) > 0) {
+            $sErrorsString = '';
+            foreach ($oFailedConstraints as $oFailedConstraint) {
+                /* @var $oFailedConstraint ConstraintViolationInterface */
+                $sErrorsString .= $oFailedConstraint->getMessage() . ' ' . $oFailedConstraint->getInvalidValue();
             }
-            $propertyMetadata = $metadata->getPropertyMetadata($constrainedProperty);
-            $constraints = $propertyMetadata[0]->constraints;
-            foreach ($constraints as $constraint) {
-                //TODO fix checks
-                if ( !$this->oValidator->validate($aProperties[$constrainedProperty], $constraint) ){
-                    return false;
-                }
-            }
+
+            throw new InvalidCircleJsonException($sErrorsString);
         }
+
         return true;
     }
 }

@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "eb4c0bec-edc4-4e57-a561-83f29e78a0b8",
+		"name": "api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://172.18.0.2:8000/api/draw-me-like-one-of-your-french-girls/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"shapes\": [\n        {\n            \"type\": \"circle\",\n            \"perimeter\": 100,\n            \"border\": {\n                \"color\": \"red\",\n                \"width\": -5\n            }\n        },\n        {\n            \"type\": \"square\",\n            \"sideLength\": 10,\n            \"border\": {\n                \"color\": \"#776cff\",\n                \"width\": 2\n            }\n        },\n        {\n            \"type\": \"circle\",\n            \"perimeter\": 50,\n            \"border\": {\n                \"color\": \"blue\",\n                \"width\": -10\n            }\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://172.18.0.2:8000/api/draw-me-like-one-of-your-french-girls/",
+					"protocol": "http",
+					"host": [
+						"172",
+						"18",
+						"0",
+						"2"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"draw-me-like-one-of-your-french-girls",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

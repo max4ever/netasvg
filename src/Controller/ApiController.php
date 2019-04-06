@@ -14,7 +14,7 @@ class ApiController
 {
 
     /**
-     * @Route("/api/draw-me-like-one-of-your-french-girls/", methods={"POST"}, name="generate_svg")
+     * @Route("/api/draw/", methods={"POST"}, name="generate_svg")
      *
      * @param Request $request
      * @param ShapesFactory $oShapeFactory
@@ -46,6 +46,9 @@ class ApiController
                     return Response::create('Unsported shape "' . $aShape['type'] .'" ', Response::HTTP_BAD_REQUEST);
                 }
             }
+        }
+        else{
+            return Response::create('Missing json parameter ', Response::HTTP_BAD_REQUEST);
         }
 
         $oSvgResponse->setContent($sHTML);

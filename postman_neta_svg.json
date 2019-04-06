@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "http://172.18.0.2:8000/api/draw-me-like-one-of-your-french-girls/",
+			"name": "http://172.18.0.2:8000/api/draw/",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -22,7 +22,7 @@
 					"raw": "{\n    \"shapes\": [\n        {\n            \"type\": \"circle\",\n            \"perimeter\": 100,\n            \"border\": {\n                \"color\": \"red\",\n                \"width\": -5\n            }\n        },\n        {\n            \"type\": \"square\",\n            \"sideLength\": 10,\n            \"border\": {\n                \"color\": \"#776cff\",\n                \"width\": 2\n            }\n        },\n        {\n            \"type\": \"circle\",\n            \"perimeter\": 50,\n            \"border\": {\n                \"color\": \"blue\",\n                \"width\": -10\n            }\n        }\n    ]\n}"
 				},
 				"url": {
-					"raw": "http://172.18.0.2:8000/api/draw-me-like-one-of-your-french-girls/",
+					"raw": "http://172.18.0.2:8000/api/draw/",
 					"protocol": "http",
 					"host": [
 						"172",
@@ -33,7 +33,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"draw-me-like-one-of-your-french-girls",
+						"draw",
 						""
 					]
 				}
